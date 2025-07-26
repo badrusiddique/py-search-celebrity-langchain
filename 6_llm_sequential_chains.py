@@ -18,22 +18,19 @@ prompt_name = PromptTemplate(
     input_variables=["celebrity_name"],
     template="Give me the full legal name of Indian celebrity {celebrity_name}."
 )
-celebrity_name_memory = ConversationBufferMemory(input_key="celebrity_name", memory_key="name_memory")
-llm_chain_name = LLMChain(llm=llm, prompt=prompt_name, output_key="celebrity_f_name", memory=celebrity_name_memory)
+llm_chain_name = LLMChain(llm=llm, prompt=prompt_name, output_key="celebrity_f_name")
 
 prompt_dob = PromptTemplate(
     input_variables=["celebrity_f_name"],
-    template="Share the date of birth of {celebrity_f_name} in the format DD-MM-YYYY."
+    template="Now share me the date of birth of {celebrity_f_name}."
 )
-celebrity_dob_memory = ConversationBufferMemory(input_key="celebrity_f_name", memory_key="dob_memory")
-llm_chain_dob = LLMChain(llm=llm, prompt=prompt_dob, output_key="celebrity_dob", memory=celebrity_dob_memory)
+llm_chain_dob = LLMChain(llm=llm, prompt=prompt_dob, output_key="celebrity_dob")
 
 prompt_age = PromptTemplate(
     input_variables=["celebrity_dob"],
-    template="List up to three other celebrities born on {celebrity_dob} (in DD-MM-YYYY format) around the world, or state if none are known."
+    template="Mention other celebrities who were born on date {celebrity_dob} around the world."
 )
-celebrities_on_dob_memory = ConversationBufferMemory(input_key="celebrity_dob", memory_key="on_dob_memory")
-llm_chain_age = LLMChain(llm=llm, prompt=prompt_age, output_key="celebrities_on_dob", memory=celebrities_on_dob_memory)
+llm_chain_age = LLMChain(llm=llm, prompt=prompt_age, output_key="celebrities_on_dob")
 
 input_text = st.text_input("Enter a celebrity name to search:", placeholder="e.g., Shah Rukh Khan")
 if input_text:
@@ -47,15 +44,6 @@ if input_text:
     response = sequential_chain({'celebrity_name': input_text})
 
     st.markdown("**Response from OpenAI:**")
-    st.write(f"**Full Name**: {response['celebrity_f_name']}")
-    st.write(f"**Date of Birth**: {response['celebrity_dob']}")
-    st.write(f"**Other Celebrities Born on Same Date**: {response['celebrities_on_dob']}")
-
-    with st.expander("**Celebrity Name Memory:**"):
-        st.write(celebrity_name_memory.load_memory_variables({}))
-    with st.expander("**Celebrity DOB Memory:**"):
-        st.write(celebrity_dob_memory.load_memory_variables({}))
-    with st.expander("**Celebrities on DOB Memory:**"):
-        st.write(celebrities_on_dob_memory.load_memory_variables({}))
+    st.write(response)
 
 st.markdown("*Powered by OpenAI gpt-3.5-turbo-instruct via LangChain*")

@@ -36,6 +36,7 @@ input_text = st.text_input("Enter a celebrity name to search:", placeholder="e.g
 if input_text:
     # which are chains that execute their links in a predefined order
     # where each step has a single input/output, and the output of one step is the input to the next
+    # only the last chain's output is returned
     sequential_chain = SimpleSequentialChain(chains=[llm_chain_name, llm_chain_dob, llm_chain_age])
     response = sequential_chain.run(input_text)
 

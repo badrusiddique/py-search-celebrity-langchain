@@ -93,6 +93,12 @@ The final script combines `SequentialChain` with memory. Each chain in the seque
 
 -   **Key Concepts:** `SequentialChain` with independent memory for each chain.
 
+### 8. `llm_fewshot_prompt.py`
+
+This script introduces `FewShotPromptTemplate`. This is a powerful technique where you provide the LLM with a few examples of the desired output format. This helps the model to generate more accurate and consistently formatted responses. The script defines a set of examples and uses them to build a `FewShotPromptTemplate`.
+
+-   **Key Concept:** `FewShotPromptTemplate` for providing in-context examples to the LLM.
+
 ## Versions Used
 
 This project uses the following Python packages:
